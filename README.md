@@ -47,3 +47,28 @@ spring.mvc.contentnegotiation.media-types.pdf=application/pdf
     </div>
   
 </div>
+##Fdfdf
+constructor(private httpLibros:HttpClient) { }
+  url = "http://localhost:8080/publicaciones";
+
+  public guardarPublicacion(publicacion:Publicaciones):Observable<Object>{
+    return this.httpLibros.post(this.url+"/guardar",publicacion);
+  }
+
+  //listar
+  public listarTodas():Observable<Publicaciones[]>{
+    return this.httpLibros.get<Publicaciones[]>(this.url+"/listar")
+  }
+
+  //treaer por id
+  public listarPorId(id_publicaciones:number){
+    this.httpLibros.get<Publicaciones>(this.url+id_publicaciones)
+  }
+  //actualizar
+  public actualizarPublicacion(id_publicaciones:number, publicacion:Publicaciones):Observable<Object>{
+    return this.httpLibros.put(this.url+"/actualizar/"+id_publicaciones,publicacion);
+  }
+ 
+  public eliminarPublicacion(id_publicaciones:number):Observable<Object>{
+    return this.httpLibros.delete(this.url+"/eliminar/"+id_publicaciones);
+  }
