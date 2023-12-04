@@ -72,3 +72,47 @@ constructor(private httpLibros:HttpClient) { }
   public eliminarPublicacion(id_publicaciones:number):Observable<Object>{
     return this.httpLibros.delete(this.url+"/eliminar/"+id_publicaciones);
   }
+
+
+
+<div>
+  
+  publicaciones : Publicaciones = new Publicaciones();
+
+  constructor(private pubServices: PublicacionesServicesService, private route:Router){}
+
+  //guardar
+  public guardarPublicacion(){
+    this.pubServices.guardarPublicacion(this.publicaciones).subscribe({
+      next:(datos)=>{
+        this.irLista();
+      },error:(error)=>{console.log(error)}
+    });
+  }
+
+  irLista(){
+    this.route.navigate(["/listar"])
+  }
+</div>
+
+<div>
+   public listarPublicaciones(){
+    this.pubService.listarTodas().subscribe((datos)=>{
+      console.log(datos);
+      this.publicaciones = datos;
+    });
+  }
+
+  public eliminar(id_publicaciones:number){
+    this.pubService.eliminarPublicacion(id_publicaciones).subscribe({
+      next:(datos)=>{this.irActualizar()},error:(error)=>{console.log("error al eliminar")}
+
+    });
+    
+  }
+
+  irActualizar(){
+    this.route.navigate(["/"])
+  }
+
+</div>
