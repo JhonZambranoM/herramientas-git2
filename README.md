@@ -33,16 +33,16 @@ para hacer informes PDF
 
     <div>
  spring.datasource.url=jdbc:mysql://localhost:3306/practicaconcurso?createDatabaseIfNotExist=true <br>
- spring.datasource.username=root
-spring.datasource.password=
- spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
- spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
- spring.jpa.hibernate.ddl-auto=update
- spring.jpa.show-sql=true
- spring.jpa.properties.hibernate.format_sql=true
- server.port=8080
- spring.mvc.contentnegotiation.favor-parameter=true
- spring.mvc.contentnegotiation.media-types.pdf=application/pdf
+ spring.datasource.username=root <br>
+spring.datasource.password= <br> 
+ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver <br>
+ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect <br>
+ spring.jpa.hibernate.ddl-auto=update <br>
+ spring.jpa.show-sql=true <br>
+ spring.jpa.properties.hibernate.format_sql=true <br>
+ server.port=8080 <br>
+ spring.mvc.contentnegotiation.favor-parameter=true <br>
+ spring.mvc.contentnegotiation.media-types.pdf=application/pdf <br>
 
     </div>
   
