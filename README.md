@@ -3,7 +3,7 @@
 para hacer informes PDF
 --SpringBoot
 <div>
-  instalar la libreria OPENPDF
+  # instalar la libreria OPENPDF <hr>
       @GetMapping("/generar-pdf")
     public ResponseEntity<byte[]> generarInformePDF() {
         List<Libros> libros = libroServicio.listarTodosLibros();
@@ -32,17 +32,17 @@ para hacer informes PDF
     }
 
     <div>
-    spring.datasource.url=jdbc:mysql://localhost:3306/practicaconcurso?createDatabaseIfNotExist=true
-spring.datasource.username=root
-spring.datasource.password=
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-server.port=8080
-spring.mvc.contentnegotiation.favor-parameter=true
-spring.mvc.contentnegotiation.media-types.pdf=application/pdf
+# spring.datasource.url=jdbc:mysql://localhost:3306/practicaconcurso?createDatabaseIfNotExist=true
+# spring.datasource.username=root
+# spring.datasource.password=
+# spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+# spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+# spring.jpa.hibernate.ddl-auto=update
+# spring.jpa.show-sql=true
+# spring.jpa.properties.hibernate.format_sql=true
+# server.port=8080
+# spring.mvc.contentnegotiation.favor-parameter=true
+# spring.mvc.contentnegotiation.media-types.pdf=application/pdf
 
     </div>
   
@@ -116,3 +116,33 @@ constructor(private httpLibros:HttpClient) { }
   }
 
 </div>
+
+## angular pdf
+# servicio
+  obtenerReportePDF():Observable<Blob>{
+    // Configurar las cabeceras para indicar que esperamos un archivo PDF en la respuesta
+    const headers = new HttpHeaders({ 'Content-Type': 'application/pdf' });
+
+    // Realizar la solicitud GET al endpoint que genera el informe PDF
+    return this.clienteHtpp.get(`${this.url}/generar-pdf`, { responseType: 'blob', headers });
+  }
+
+  # type
+    descargarInformePDF() {
+    this.librosService.obtenerReportePDF().subscribe(
+      (data: Blob) => {
+        const url = window.URL.createObjectURL(data);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'informe.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      (error) => {
+        console.error('Error al descargar el informe PDF', error);
+        // Maneja el error según tus necesidades
+      }
+    );
+  }
