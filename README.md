@@ -32,17 +32,17 @@ para hacer informes PDF
     }
 
     <div>
-# spring.datasource.url=jdbc:mysql://localhost:3306/practicaconcurso?createDatabaseIfNotExist=true
-# spring.datasource.username=root
-# spring.datasource.password=
-# spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-# spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
-# spring.jpa.hibernate.ddl-auto=update
-# spring.jpa.show-sql=true
-# spring.jpa.properties.hibernate.format_sql=true
-# server.port=8080
-# spring.mvc.contentnegotiation.favor-parameter=true
-# spring.mvc.contentnegotiation.media-types.pdf=application/pdf
+ spring.datasource.url=jdbc:mysql://localhost:3306/practicaconcurso?createDatabaseIfNotExist=true <br>
+ spring.datasource.username=root
+spring.datasource.password=
+ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+ spring.jpa.hibernate.ddl-auto=update
+ spring.jpa.show-sql=true
+ spring.jpa.properties.hibernate.format_sql=true
+ server.port=8080
+ spring.mvc.contentnegotiation.favor-parameter=true
+ spring.mvc.contentnegotiation.media-types.pdf=application/pdf
 
     </div>
   
@@ -146,3 +146,51 @@ constructor(private httpLibros:HttpClient) { }
       }
     );
   }
+# controller spring
+
+    @GetMapping("/generar-pdf")
+    public ResponseEntity<byte[]> generarInformePDF() {
+        List<Libros> libros = libroServicio.listarTodosLibros();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, baos);
+            document.open();
+
+            PdfPTable table = new PdfPTable(6); // 6 columnas para las propiedades de Libros
+            addTableHeader(table);
+            addRows(table, libros);
+
+            document.add(table);
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("inline", "informe.pdf");
+
+        return new ResponseEntity<>(baos.toByteArray(), headers, HttpStatus.OK);
+    }
+
+    private void addTableHeader(PdfPTable table) {
+        table.addCell("Título");
+        table.addCell("Números de Páginas");
+        table.addCell("ISBN");
+        table.addCell("Fecha Creación");
+        table.addCell("Fecha Modificación");
+        table.addCell("Año de Publicación");
+    }
+
+    private void addRows(PdfPTable table, List<Libros> libros) {
+        for (Libros libro : libros) {
+            table.addCell(libro.getTitulo());
+            table.addCell(String.valueOf(libro.getNum_pages()));
+            table.addCell(libro.getIsbn());
+            table.addCell(libro.getFecha_creacion().toString());
+            table.addCell(libro.getFecha_modificacion().toString());
+            table.addCell(String.valueOf(libro.getAnio_pub()));
+        }
+    }
